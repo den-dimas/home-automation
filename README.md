@@ -25,8 +25,7 @@ Home Automation adalah suatu perangkat sistem digital yang dapat melakukan peker
 
 ## Block Diagram
 
-![Block Diagram](./image/BlockDiagram.png)
-
+<image src="./image/BlockDiagram.png" width="580" />
 
 ## State
 - S0 : COLLECT
