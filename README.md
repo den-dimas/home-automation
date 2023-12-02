@@ -5,10 +5,10 @@ Home Automation adalah suatu perangkat sistem digital yang dapat melakukan peker
 
 ## Anggota Kelompok (AP01)
 
-- Dimas Dermawan - 2206059654
-- Billie Elian   - 
-- Ivan Yuantama  - 
-- Beres Bakti P  - 
+- Dimas Dermawan         - 2206059654
+- Billie Elian           - 
+- Ivan Yuantama          - 2206824243
+- Beres Bakti Parsaoran  - 2206817585
 
 
 ## Features
