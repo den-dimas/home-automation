@@ -1,55 +1,47 @@
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_ARITH.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.STD_LOGIC_ARITH.ALL;
+USE IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-entity PlantWateringSystem is
-    Port ( clk : in STD_LOGIC;
-           enable : in STD_LOGIC;
-           is_raining : in STD_LOGIC; -- Input for rain indicator
-           water_pump : out STD_LOGIC);
-end PlantWateringSystem;
+ENTITY PlantWateringSystem IS
+    PORT (
+        time_counter : INTEGER RANGE 0 TO 24 := 0; -- 24 hour format
+        enable : IN STD_LOGIC;
+        is_raining : IN STD_LOGIC; -- Input for rain indicator
 
-architecture Behavioral of PlantWateringSystem is
-    type state_type is (IDLE, WATERING);
-    signal state, next_state : state_type;
-    signal time_counter : integer range 0 to 24 := 0; -- 24 hour format
-begin
+        water_pump : OUT STD_LOGIC);
+END PlantWateringSystem;
+
+ARCHITECTURE Behavioral OF PlantWateringSystem IS
+    TYPE state_type IS (IDLE, WATERING);
+    SIGNAL state, next_state : state_type;
+BEGIN
 
     -- State machine
-    process(clk)
-    begin
-        if rising_edge(clk) then
-            if enable = '1' then
-                state <= next_state;
-                if time_counter = 24 then
-                    time_counter <= 0;
-                else
-                    time_counter <= time_counter + 1;
-                end if;
-            end if;
-        end if;
-    end process;
+    PROCESS (time_counter)
+    BEGIN
+        state <= next_state;
+    END PROCESS;
 
     -- State logic with rain check
-    process(state, time_counter, is_raining)
-    begin
-        case state is
-            when IDLE =>
+    PROCESS (state, is_raining)
+    BEGIN
+        CASE state IS
+            WHEN IDLE =>
                 water_pump <= '0';
-                if (time_counter = 7 or time_counter = 17) and is_raining = '0' then -- Check for rain
+                IF (time_counter = 7 OR time_counter = 17) AND is_raining = '0' THEN -- Check for rain
                     next_state <= WATERING;
-                else
+                ELSE
                     next_state <= IDLE;
-                end if;
-            when WATERING =>
+                END IF;
+            WHEN WATERING =>
                 water_pump <= '1';
-                if (time_counter = 8 or time_counter = 18) or is_raining = '1' then -- Stop watering if it's raining or after 1 hour
+                IF (time_counter = 8 OR time_counter = 18) OR is_raining = '1' THEN -- Stop watering if it's raining or after 1 hour
                     next_state <= IDLE;
-                else
+                ELSE
                     next_state <= WATERING;
-                end if;
-        end case;
-    end process;
+                END IF;
+        END CASE;
+    END PROCESS;
 
-end Behavioral;
+END Behavioral;
