@@ -10,18 +10,18 @@ USE IEEE.MATH_REAL.ALL;
 
 ENTITY AirConditioner IS
     PORT (
-        CLK : IN STD_LOGIC;
-
-        time_counter : IN INTEGER RANGE 1 TO 24; -- Clock untuk waktu
-        on_time : IN INTEGER RANGE 1 TO 24; -- Timer untuk otomatis menyalakan AC
+        time_counter : IN INTEGER RANGE 0 TO 23; -- Clock untuk waktu
+        on_time : IN INTEGER RANGE 0 TO 23; -- Timer untuk otomatis menyalakan AC
 
         temp_sensor : INOUT STD_LOGIC_VECTOR (7 DOWNTO 0); -- Sensor untuk Temperature
         humidity_sensor : IN STD_LOGIC_VECTOR (7 DOWNTO 0); -- Sensor untuk Kelembaban
 
         compressor : INOUT STD_LOGIC; -- Kontrol untuk kompresor
-        fan : INOUT STD_LOGIC_VECTOR (1 DOWNTO 0); -- Kontrol untuk Kipas
+        fan : INOUT STD_LOGIC_VECTOR (1 DOWNTO 0) -- Kontrol untuk Kipas
 
-        celcius : OUT INTEGER
+        -- Untuk simulasi temperatur
+        -- CLK : IN STD_LOGIC;
+        -- celcius : OUT INTEGER
     );
 END AirConditioner;
 
@@ -60,23 +60,24 @@ BEGIN
         fan <= fan_speed;
     END PROCESS;
 
-    simulate_temp : PROCESS (CLK)
-        VARIABLE seed1, seed2 : POSITIVE;
-        VARIABLE tempT : INTEGER;
+    -- Simulasi Temperature
+    -- simulate_temp : PROCESS (CLK)
+    --     VARIABLE seed1, seed2 : POSITIVE;
+    --     VARIABLE tempT : INTEGER;
 
-        IMPURE FUNCTION GenerateRandomCelcius RETURN INTEGER IS
-            VARIABLE riil : real;
-        BEGIN
-            uniform(seed1, seed2, riil);
+    --     IMPURE FUNCTION GenerateRandomCelcius RETURN INTEGER IS
+    --         VARIABLE riil : real;
+    --     BEGIN
+    --         uniform(seed1, seed2, riil);
 
-            RETURN INTEGER(round(riil * 85.0));
-        END GenerateRandomCelcius;
-    BEGIN
-        IF rising_edge(CLK) THEN
-            tempT := GenerateRandomCelcius;
+    --         RETURN INTEGER(round(riil * 85.0));
+    --     END GenerateRandomCelcius;
+    -- BEGIN
+    --     IF rising_edge(CLK) THEN
+    --         tempT := GenerateRandomCelcius;
 
-            celcius <= tempT;
-            temp_sensor <= STD_LOGIC_VECTOR(to_unsigned(tempT, 8));
-        END IF;
-    END PROCESS;
+    --         celcius <= tempT;
+    --         temp_sensor <= STD_LOGIC_VECTOR(to_unsigned(tempT, 8));
+    --     END IF;
+    -- END PROCESS;
 END Behavioral;
