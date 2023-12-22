@@ -96,6 +96,8 @@ ARCHITECTURE rtl OF Main IS
 
             water_pump : OUT STD_LOGIC);
     END COMPONENT PlantWateringSystem;
+
+    SIGNAL dtk : INTEGER := 0;
 BEGIN
 
     lampuPort : Lampu PORT MAP(
@@ -136,19 +138,18 @@ BEGIN
     );
 
     hitungDetik : PROCESS (CLK)
-        VARIABLE dtk : INTEGER := 0;
     BEGIN
         IF rising_edge(CLK) THEN
-            IF (dtk = 3600) THEN
-                dtk := 0;
+            IF (dtk = 2599) THEN
+                dtk <= 0;
 
-                time_counter <= time_counter + 1;
-
-                IF (time_counter = 24) THEN
+                IF (time_counter = 23) THEN
                     time_counter <= 0;
+                ELSE
+                    time_counter <= time_counter + 1;
                 END IF;
             ELSE
-                dtk := dtk + 1;
+                dtk <= dtk + 1;
             END IF;
         END IF;
     END PROCESS hitungDetik;
