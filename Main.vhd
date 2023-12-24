@@ -46,6 +46,7 @@ ENTITY Main IS
         plant_water_pump : OUT STD_LOGIC
     );
 END ENTITY Main;
+
 ARCHITECTURE rtl OF Main IS
     COMPONENT Lampu IS
         PORT (
